@@ -30,12 +30,13 @@ function App() {
     if (!destination) return;
     if (destination?.droppableId === source.droppableId) {
       // 같은 박스 내에 있으면
-      setToDos((oldToDos) => {
-        const boardCopy = [...oldToDos[source.droppableId]];
+      setToDos((allBoards) => {
+        const boardCopy = [...allBoards[source.droppableId]];
+        const taskObj = boardCopy[source.index]
         boardCopy.splice(source.index, 1);
-        boardCopy.splice(destination?.index, 0, draggableId);
+        boardCopy.splice(destination?.index, 0, taskObj);
         return {
-          ...oldToDos,
+          ...allBoards,
           [source.droppableId]: boardCopy,
         };
       });
@@ -44,9 +45,10 @@ function App() {
       // 다른 박스에 있으면
       setToDos((allBoards) => {
         const sourceBoard = [...allBoards[source.droppableId]];
+        const taskObj = sourceBoard[source.index]
         const destinationBoard = [...allBoards[destination.droppableId]];
         sourceBoard.splice(source.index, 1);
-        destinationBoard.splice(destination?.index, 0, draggableId);
+        destinationBoard.splice(destination?.index, 0, taskObj);
 
         return {
           ...allBoards,
